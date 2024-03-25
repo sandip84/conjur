@@ -30,7 +30,7 @@ spec:
         - name: backend-certs
           mountPath: "/etc/certs/"
           readOnly: true
-        args: ["-c", "ssl=on", "-c", "ssl_cert_file=/etc/certs/server.crt", "-c", "ssl_key_file=/etc/certs/server.key"]
+        args: ["-c", "ssl=on", "-c", "ssl_cert_file=/etc/certs/pg_server.crt", "-c", "ssl_key_file=/etc/certs/pg_server.key"]
         readinessProbe:
           exec:
             command: ["psql", "-w", "-U", "postgres", "-c", "SELECT 1"]
