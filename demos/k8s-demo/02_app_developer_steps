@@ -42,7 +42,6 @@ echo 'Waiting for application to boot up'
 echo '(This may take more than 1 minute)...'
 
 kubectl run --rm -i \
-  --generator=run-pod/v1 \
   --namespace "${APP_NAMESPACE}" \
   --wait \
   --image "alpine:3.9" \
@@ -80,7 +79,7 @@ kubectl run --rm -i \
        --quiet \
        --output-document=/dev/stdout \
        --header "Content-Type: application/json" \
-       --post-data '{"name": "Mr. Snuggles"}' \
+       --post-data '{"name": "Mr. John"}' \
        "${APPLICATION_URL}/pet"
 
   echo "OK"

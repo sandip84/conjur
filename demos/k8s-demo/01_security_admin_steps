@@ -30,6 +30,11 @@ kubectl --namespace "${BACKEND_NAMESPACE}" \
 ##################################################
 step "Create StatefulSet for Database"
 
+# POSTGRES_USER
+# This optional environment variable is used in conjunction with POSTGRES_PASSWORD to set a user 
+# and its password. This variable will create the specified user with superuser power and a database 
+# with the same name. If it is not specified, then the default user of postgres will be used.
+
 kubectl --namespace "${BACKEND_NAMESPACE}" apply \
   --filename "etc/pg.yml"
 
@@ -52,9 +57,19 @@ db_url="quick-start-backend.${BACKEND_NAMESPACE}.svc.cluster.local:5432"
 
 echo "Using DB endpoint: $db_url"
 
+# a new pod by name postgres-cli is created
+# Run commands in a pod and immediately remove it:
+# To test a service from a temp pod inside cluster:
+# k run temp --image=curlimages/curl -i --rm --restart=Never -- curl <svc name>
+# after the command is run by the above pod, temp pod is deleted. Because of "--rm" 
+# since the pod is stopped by "--restart=Never" 
+# The DB is created in the StatefulSet "quick-start-backend", referenced in the "URL" below.
+
+# EOSQL is a limit string for a block. The limit string signifies the start 
+# and end of a text block to the bash interpreter (or any POSIXy shell). The limit string can 
+# be any text that doesn't appear in your block, EOF is common in examples.
 kubectl run --rm -i \
  --env PGPASSWORD="${DB_ADMIN_PASSWORD}" \
- --generator=run-pod/v1 \
  --namespace "${BACKEND_NAMESPACE}" \
  --wait \
  postgres-cli \
@@ -92,6 +107,8 @@ kubectl --namespace "${APP_NAMESPACE}" \
   --from-literal username="${DB_USER}" \
   --from-literal password="${DB_INITIAL_PASSWORD}"
 
+# Usage of "--from-literal"
+# https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
 ##################################################
 step "Create Application Service Account"
 

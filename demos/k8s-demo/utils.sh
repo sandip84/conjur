@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+echo "sandip..."
 step() {
   echo
   echo ">>--- $1"
