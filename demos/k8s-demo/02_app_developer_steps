@@ -96,5 +96,5 @@ kubectl run --rm -i \
   echo
 EOF
 
-step "Cleaning up"
-./stop || true
+# step "Cleaning up"
+# ./stop || true
